@@ -24,12 +24,13 @@
   <div class="row">
     <div class="col-lg-12" id="task_list">
       {{#each tasks}}
-      <div class="card my-3 {{#eq status 'done' }}bg-light{{/eq}}">
+      <div id="task{{id}}" class="card my-3 {{#eq status 'done' }}bg-light{{/eq}}">
         <div class="card-body">
           <p class="card-text">{{ description }}</p>
           {{#eq status 'pending'}}
-            <a href="#" class="card-link">Done</a>
+            <input type="button" id="done{{ id }}" onclick="doneTask({{ id }})" value="Done" class="btn btn-success">
           {{/eq}}
+            <input type="button" id="delete{{ id }}" onclick="deleteTask({{ id }})" value="Delete" class="btn btn-danger">
         </div>
       </div>
       {{/each}}
