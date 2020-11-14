@@ -1,8 +1,8 @@
-function storeTask() {
-  console.log('Stores the tasks');
+function storeUrl() {
+  console.log('Stores the urls');
   // Javascript
-  let taskDescription = document.getElementById('task_description').value;
-  console.log('task Description', taskDescription);
+  let urlDescription = document.getElementById('url_description').value;
+  console.log('url Description', urlDescription);
 
   let payload = {
     method: 'POST',
@@ -10,9 +10,9 @@ function storeTask() {
       Accept: 'application/json',
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ description: taskDescription })
+    body: JSON.stringify({ description: urlDescription })
   };
-  fetch('/tasks', payload)
+  fetch('/urls', payload)
     .then(response => {
       if (response.ok) {
         return response.json();
@@ -20,88 +20,25 @@ function storeTask() {
         throw "Error en la llamada Ajax";
       }
     })
-    .then(task => {
-      document.getElementById('task_description').value = '';
-      addTask(task);
+    .then(url => {
+      document.getElementById('url_description').value = '';
+      addUrl(url);
     })
     .catch(error => {
       console.log('Error: ', error);
     })
 }
 
-function addTask(task) {
+function addUrl(url) {
   let html =
   `
-  <div id="task${task.id}" class="card my-3">
+    <div id="url${url.id}" class="card my-3">
       <div class="card-body">
-      <p class="card-text">${task.description}</p>
-      <input type="button" id="done${task.id}" onclick="doneTask(${task.id})" value="Done" class="btn btn-success">
-      <input type="button" id="delete${task.id}" onclick="deleteTask(${task.id})" value="Delete" class="btn btn-danger">
+      <p class="card-text">Url Original: ${url.description}</p>
+      <p class="card-text">New Url: ${url.newDescription}</p>
       </div>
   </div>
   `;
   let node = document.createRange().createContextualFragment(html);
-  document.getElementById('task_list').prepend(node);
+  document.getElementById('url_list').prepend(node);
 }
-
-function deleteTask( taskId ){
-  let body = {
-      method: 'POST',
-      headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ id: taskId })
-  }
-
-  fetch('/delete', body)
-  .then(response => {
-      if (response.ok) {
-      return response.json();
-      } else {
-      throw "Error en la llamada Ajax";
-      }
-  })
-  .then(id => {
-      deleteTask(id);
-  })
-  .catch(error => {
-      console.log('Error: ', error);
-  })
-
-  function deleteTask(data) {
-      document.getElementById('task'+data.id).remove()
-  }
-}
-
-function doneTask( taskId ){
-  let body = {
-      method: 'POST',
-      headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ id: taskId })
-  }
-
-  fetch('/update', body)
-  .then(response => {
-      if (response.ok) {
-      return response.json();
-      } else {
-      throw "Error en la llamada Ajax";
-      }
-  })
-  .then(id => {
-      doneTask(id);
-  })
-  .catch(error => {
-      console.log('Error: ', error);
-  })
-
-  function doneTask(data) {
-      document.getElementById('task'+data.id).classList.add("bg-secondary")
-      document.getElementById('done'+data.id).remove()
-  }
-}
-

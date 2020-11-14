@@ -1,7 +1,7 @@
-const Task = require('../models/Task');
+const Url = require('../models/Url');
 
 exports.index = (req, res) => {
-  let tasks = Task.all().then((tasks) => {
-    res.render('homepage/index', {tasks: tasks});
+  let urls = Url.all().then((urls) => {
+    res.render('homepage/index', {urls: urls});
   });
 }
